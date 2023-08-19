@@ -1,30 +1,93 @@
-<script lang="ts">
-import { Vue, Options } from "vue-class-component";
+<script setup lang="ts">
 import Language from "@/language";
+import products from "../products";
 
-@Options({
-  computed: {
-    Language() {
-      return Language;
-    },
+const props = defineProps({
+  changeFilter: {
+    type: Function,
+    required: true,
   },
-})
-export default class HeaderBlock extends Vue {}
+  changeSearch: {
+    type: Function,
+    required: true,
+  },
+});
+
+function changeFilterLoc(event: any) {
+  let type = event.target.value;
+  if (type === "all") {
+    type = null;
+  }
+
+  props.changeFilter(type);
+}
+
+function changeSearchLoc(event: any) {
+  let search = event.target.value.trim().toLowerCase();
+  if (search === "") {
+    search = null;
+  }
+
+  props.changeSearch(search);
+}
+
+function changeLang(event: any) {
+  const language = event.target.value;
+
+  Language.setCurrentLanguage(language);
+}
+
+const productTypes = products
+  .reduce((accumulator: any, val) => {
+    const e = accumulator.find((e: any) => e[0] === val.type);
+
+    if (e === undefined) {
+      accumulator.push([val.type, 1]);
+    } else {
+      e[1]++;
+    }
+
+    return accumulator;
+  }, [])
+  .sort((a: any, b: any) => a[1] - b[1]);
 </script>
 
 <template>
   <header>
     <h1>{{ Language.get("app_name") }}</h1>
     <p>{{ Language.get("description") }}</p>
-    <div class="search">
-      <input placeholder="Search" type="text" />
-    </div>
-    <div class="filters">
-      <select>
-        <option value="all">All</option>
-        <option value="services">Services</option>
-        <option value="products">Products</option>
-      </select>
+    <div class="actions">
+      <div class="languages">
+        <select @change="changeLang">
+          <option disabled>{{ Language.get("select_language") }}</option>
+          <option
+            :selected="Language.getCurrentLanguage() === lang"
+            v-for="lang in Language.Languages"
+            :value="lang"
+            :key="lang"
+          >
+            {{ Language.flags[lang] }}
+            {{ Language.get(lang + "_name") }}
+          </option>
+        </select>
+      </div>
+      <div class="search">
+        <input
+          @input="changeSearchLoc"
+          :placeholder="Language.get('search')"
+          type="text"
+        />
+      </div>
+      <div class="filters">
+        <select @change="changeFilterLoc">
+          <option value="all">
+            {{ Language.get("all") }} ({{ products.length }})
+          </option>
+          <option v-for="type in productTypes" :key="type[0]" :value="type[0]">
+            {{ Language.get(type[0]) }} ({{ type[1] }})
+          </option>
+        </select>
+      </div>
     </div>
   </header>
 </template>
@@ -35,30 +98,26 @@ header {
   padding: 2rem;
 }
 
-.search {
-  margin-top: 1rem;
+.search,
+.filters {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.search,
+.filters,
+.languages {
+  margin: 5px;
 }
 
 .search input {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px 2px 0.5px;
+  border-bottom: 1px solid #ccc;
 }
 
-.search button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.filters {
-  margin-top: 1rem;
-}
-
-.filters select {
-  padding: 0.5rem;
+.filters select,
+.languages select {
+  height: 27px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }

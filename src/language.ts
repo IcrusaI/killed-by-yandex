@@ -4,7 +4,7 @@ const language: { [index: string]: any } = {
     en_name: "English",
   },
   ru: {
-    app_name: "Убит Яндексом",
+    app_name: "Убито Яндексом",
     description: "Кладбище продуктов Яндекса",
     select_language: "Выберите язык",
     search: "Найти...",

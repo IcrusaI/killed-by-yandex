@@ -79,6 +79,7 @@ defineExpose({
   margin: 0 auto;
   padding: 2rem;
   display: grid;
+  overflow-x: auto;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 2rem;
 }

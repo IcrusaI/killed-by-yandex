@@ -133,6 +133,20 @@ export default [
     proof: "https://yandex.ru/company/news/2018-12-05",
     type: "hardware",
   },
+  {
+    name: {
+      ru: "Яндекс.WiFi",
+      en: "",
+    },
+    description: {
+      ru: "«Яндекс» предоставлял информационную поддержку кафе и ресторанам, которые хотели завести у себя бесплатный Wi-Fi. А провайдеры устанавливали им оборудование на льготных условиях.",
+      en: "",
+    },
+    start_date: new Date(1085515200000),
+    end_date: new Date(1199131200000),
+    proof: "",
+    type: "service",
+  },
   /* {
     name: {
       ru: "",

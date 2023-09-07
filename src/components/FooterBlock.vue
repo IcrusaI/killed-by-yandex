@@ -5,7 +5,7 @@ import Language from "@/language";
 <template>
   <footer>
     <a
-      href="https://github.com/IcrusaI/killed-by-yandex/blob/main/LICENSE"
+      href="https://github.com/IcrusaI/killed-by-yandex/blob/master/LICENSE"
       target="_blank"
       >&copy; 2023 {{ Language.get("app_name") }}</a
     >
